@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>YOUR STORE — Resale Shop</title>
-  <meta name="description" content="Shop authentic products from YOUR STORE. Browse available inventory and purchase online.">
+  <title>VLLPLUGZ — Resale Shop</title>
+  <meta name="description" content="Shop With VLL for quality products,excellent price and available inventory">
   <style>
     :root{--bg:#f7f7f5;--card:#fff;--text:#111;--muted:#666;--line:#e5e5e5;--accent:#111;--max:1180px}
     *{box-sizing:border-box} body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
@@ -37,7 +37,7 @@
 </head>
 <body>
 <header><div class="nav">
-  <div class="brand" id="brand">YOUR STORE</div>
+  <div class="brand" id="brand">VLLPLUGZ</div>
   <div class="nav-actions"><button class="btn secondary small" onclick="openAdmin()">Manage Inventory</button><button class="btn small" onclick="openCart()">Cart <span id="cartCount">0</span></button></div>
 </div></header>
 
@@ -48,7 +48,7 @@
       <p>Browse current inventory, see what is available, add items to your cart, and check out. Your inventory can be updated from the Manage Inventory panel.</p>
       <button class="btn" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Shop inventory</button>
     </div>
-    <div class="hero-art">RS</div>
+    <div class="hero-art">VLL</div>
   </section>
 
   <div class="toolbar">
@@ -58,7 +58,7 @@
   <section id="products" class="grid"></section>
 </main>
 
-<footer>© <span id="year"></span> <span id="footBrand">YOUR STORE</span>. Product availability changes as inventory sells.</footer>
+<footer>© <span id="year"></span> <span id="footBrand">VLLPLUGZ</span>. Product availability changes as inventory sells.</footer>
 
 <div class="overlay" id="cartOverlay" onclick="if(event.target===this)closeCart()"><aside class="panel">
   <div style="display:flex;justify-content:space-between;align-items:center"><h2>Your cart</h2><button class="btn secondary small" onclick="closeCart()">Close</button></div>
@@ -88,7 +88,7 @@ const DEFAULTS=[
 ];
 let products=JSON.parse(localStorage.getItem("resale_products")||"null")||DEFAULTS;
 let cart=JSON.parse(localStorage.getItem("resale_cart")||"[]");
-let store=localStorage.getItem("resale_store")||"YOUR STORE";
+let store=localStorage.getItem("resale_store")||"VLLPLUGZ";
 const $=id=>document.getElementById(id);
 function money(n){return new Intl.NumberFormat("en-US",{style:"currency",currency:"USD"}).format(n)}
 function save(){localStorage.setItem("resale_products",JSON.stringify(products));localStorage.setItem("resale_cart",JSON.stringify(cart))}
