@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>YOUR STORE — Resale Shop</title>
+  <meta name="description" content="Shop authentic products from YOUR STORE. Browse available inventory and purchase online.">
+  <style>
+    :root{--bg:#f7f7f5;--card:#fff;--text:#111;--muted:#666;--line:#e5e5e5;--accent:#111;--max:1180px}
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+    button,input,select,textarea{font:inherit} button{cursor:pointer}
+    header{position:sticky;top:0;z-index:10;background:rgba(247,247,245,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+    .nav{max-width:var(--max);margin:auto;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .brand{font-weight:900;letter-spacing:-.04em;font-size:21px}.nav-actions{display:flex;gap:9px}
+    .btn{border:1px solid #111;background:#111;color:#fff;border-radius:999px;padding:11px 16px;font-weight:750}
+    .btn.secondary{background:#fff;color:#111;border-color:#d8d8d8}.btn.small{padding:8px 12px;font-size:13px}
+    main{max-width:var(--max);margin:auto;padding:34px 22px 70px}
+    .hero{background:#111;color:#fff;border-radius:26px;padding:52px clamp(24px,6vw,70px);display:grid;grid-template-columns:1.3fr .7fr;gap:30px;align-items:center;overflow:hidden}
+    .hero h1{font-size:clamp(38px,6vw,72px);line-height:.95;letter-spacing:-.06em;margin:0 0 18px}.hero p{color:#cfcfcf;max-width:560px;font-size:17px;line-height:1.6}
+    .hero-art{height:240px;border:1px solid #333;border-radius:24px;background:linear-gradient(145deg,#1c1c1c,#090909);display:flex;align-items:center;justify-content:center;font-size:72px;font-weight:900;letter-spacing:-.08em}
+    .toolbar{display:flex;gap:12px;align-items:center;justify-content:space-between;margin:30px 0 18px;flex-wrap:wrap}
+    .search{flex:1;min-width:240px;padding:13px 16px;border:1px solid #d8d8d8;border-radius:999px;background:#fff;outline:none}
+    .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:20px;overflow:hidden;display:flex;flex-direction:column}
+    .photo{aspect-ratio:1/1;background:#eee;display:flex;align-items:center;justify-content:center;overflow:hidden}.photo img{width:100%;height:100%;object-fit:cover}.placeholder{font-size:34px;color:#aaa}
+    .info{padding:15px}.cat{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:#888}.name{font-weight:800;margin:6px 0}.price{font-weight:900;font-size:18px}.stock{font-size:12px;color:#777;margin-top:5px}.card .btn{margin-top:13px;width:100%}
+    .empty{text-align:center;padding:60px 20px;color:#777;border:1px dashed #ccc;border-radius:20px;background:#fff}
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.48);display:none;z-index:30}.overlay.open{display:block}
+    .panel{position:absolute;right:0;top:0;height:100%;width:min(520px,100%);background:#fff;padding:24px;overflow:auto}
+    .panel h2{margin-top:0}.row{display:flex;gap:10px}.row>*{flex:1}.field{margin:12px 0}.field label{display:block;font-size:12px;font-weight:800;margin-bottom:6px}.field input,.field textarea,.field select{width:100%;padding:11px 12px;border:1px solid #d8d8d8;border-radius:10px;background:#fff}.field textarea{min-height:90px;resize:vertical}
+    .item{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}.thumb{width:64px;height:64px;border-radius:10px;background:#eee;object-fit:cover}.qty{display:flex;gap:7px;align-items:center}.qty button{border:1px solid #ddd;background:#fff;border-radius:8px;width:28px;height:28px}
+    .total{display:flex;justify-content:space-between;font-weight:900;font-size:20px;padding:18px 0}.notice{background:#f5f5f5;border-radius:12px;padding:12px;color:#555;font-size:13px;line-height:1.5}
+    .admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.admin-product{border:1px solid var(--line);padding:14px;border-radius:14px;display:flex;justify-content:space-between;gap:10px}
+    footer{max-width:var(--max);margin:auto;padding:0 22px 35px;color:#777;font-size:13px}
+    @media(max-width:850px){.hero{grid-template-columns:1fr}.hero-art{display:none}.grid{grid-template-columns:repeat(2,1fr)}.admin-grid{grid-template-columns:1fr}}
+    @media(max-width:520px){.grid{grid-template-columns:1fr}.nav{padding:15px}.hero{padding:34px 24px}.hero h1{font-size:46px}}
+  </style>
+</head>
+<body>
+<header><div class="nav">
+  <div class="brand" id="brand">YOUR STORE</div>
+  <div class="nav-actions"><button class="btn secondary small" onclick="openAdmin()">Manage Inventory</button><button class="btn small" onclick="openCart()">Cart <span id="cartCount">0</span></button></div>
+</div></header>
+
+<main>
+  <section class="hero">
+    <div><div style="font-size:12px;letter-spacing:.16em;font-weight:800;color:#aaa;margin-bottom:12px">ONLINE RESALE SHOP</div>
+      <h1>Find your next pair.</h1>
+      <p>Browse current inventory, see what is available, add items to your cart, and check out. Your inventory can be updated from the Manage Inventory panel.</p>
+      <button class="btn" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Shop inventory</button>
+    </div>
+    <div class="hero-art">RS</div>
+  </section>
+
+  <div class="toolbar">
+    <input class="search" id="search" placeholder="Search products..." oninput="renderProducts()">
+    <select class="search" style="flex:0 0 190px" id="category" onchange="renderProducts()"><option value="">All categories</option></select>
+  </div>
+  <section id="products" class="grid"></section>
+</main>
+
+<footer>© <span id="year"></span> <span id="footBrand">YOUR STORE</span>. Product availability changes as inventory sells.</footer>
+
+<div class="overlay" id="cartOverlay" onclick="if(event.target===this)closeCart()"><aside class="panel">
+  <div style="display:flex;justify-content:space-between;align-items:center"><h2>Your cart</h2><button class="btn secondary small" onclick="closeCart()">Close</button></div>
+  <div id="cartItems"></div><div class="total"><span>Total</span><span id="cartTotal">$0.00</span></div>
+  <button class="btn" style="width:100%" onclick="checkout()">Proceed to checkout</button>
+  <p class="notice" style="margin-top:12px">Checkout is ready for a payment provider connection. For now, the site creates an order summary and can send the customer to your chosen checkout link.</p>
+</aside></div>
+
+<div class="overlay" id="adminOverlay" onclick="if(event.target===this)closeAdmin()"><aside class="panel">
+  <div style="display:flex;justify-content:space-between;align-items:center"><h2>Manage inventory</h2><button class="btn secondary small" onclick="closeAdmin()">Close</button></div>
+  <p class="notice">Products are saved in this browser using local storage. For a real public store, connect this catalog to a database/admin system before launch.</p>
+  <div class="field"><label>Store name</label><input id="storeName" placeholder="Your Store"><button class="btn small" style="margin-top:8px" onclick="saveStoreName()">Save store name</button></div>
+  <hr>
+  <h3>Add product</h3>
+  <div class="field"><label>Product name</label><input id="pName" placeholder="e.g. Slides Size 10"></div>
+  <div class="row"><div class="field"><label>Price</label><input id="pPrice" type="number" min="0" step=".01" placeholder="110"></div><div class="field"><label>Inventory</label><input id="pStock" type="number" min="0" step="1" placeholder="1"></div></div>
+  <div class="row"><div class="field"><label>Category</label><input id="pCat" placeholder="Slides"></div><div class="field"><label>Image URL</label><input id="pImg" placeholder="https://..."></div></div>
+  <div class="field"><label>Description</label><textarea id="pDesc" placeholder="Condition, size, color, authenticity details, etc."></textarea></div>
+  <button class="btn" onclick="addProduct()">Add product</button>
+  <h3 style="margin-top:28px">Current products</h3>
+  <div id="adminProducts"></div>
+</aside></div>
+
+<script>
+const DEFAULTS=[
+ {id:crypto.randomUUID(),name:"Example Product",price:110,stock:2,category:"Example",image:"",desc:"Replace this product from Manage Inventory."}
+];
+let products=JSON.parse(localStorage.getItem("resale_products")||"null")||DEFAULTS;
+let cart=JSON.parse(localStorage.getItem("resale_cart")||"[]");
+let store=localStorage.getItem("resale_store")||"YOUR STORE";
+const $=id=>document.getElementById(id);
+function money(n){return new Intl.NumberFormat("en-US",{style:"currency",currency:"USD"}).format(n)}
+function save(){localStorage.setItem("resale_products",JSON.stringify(products));localStorage.setItem("resale_cart",JSON.stringify(cart))}
+function renderProducts(){
+ const q=$("search").value.toLowerCase(), cat=$("category").value;
+ const cats=[...new Set(products.map(p=>p.category).filter(Boolean))];
+ $("category").innerHTML='<option value="">All categories</option>'+cats.map(c=>`<option ${c===cat?"selected":""}>${esc(c)}</option>`).join("");
+ const list=products.filter(p=>(!q||(p.name+" "+p.category+" "+p.desc).toLowerCase().includes(q))&&(!cat||p.category===cat));
+ $("products").innerHTML=list.length?list.map(p=>`
+ <article class="card">
+  <div class="photo">${p.image?`<img src="${escAttr(p.image)}" alt="${escAttr(p.name)}" onerror="this.style.display='none';this.parentElement.innerHTML='<div class=placeholder>IMG</div>'">`:`<div class="placeholder">IMG</div>`}</div>
+  <div class="info"><div class="cat">${esc(p.category||"Product")}</div><div class="name">${esc(p.name)}</div><div class="price">${money(p.price)}</div><div class="stock">${p.stock>0?p.stock+" available":"Sold out"}</div>
+  <button class="btn" ${p.stock<1?"disabled":""} onclick="addToCart('${p.id}')">${p.stock<1?"Sold out":"Add to cart"}</button></div>
+ </article>`).join(""):'<div class="empty" style="grid-column:1/-1">No products match your search.</div>';
+ $("brand").textContent=store;$("footBrand").textContent=store;
+}
+function addToCart(id){const p=products.find(x=>x.id===id);if(!p||p.stock<1)return;const i=cart.find(x=>x.id===id);if(i)i.qty=Math.min(i.qty+1,p.stock);else cart.push({id,qty:1});save();updateCartCount();openCart()}
+function updateCartCount(){$("cartCount").textContent=cart.reduce((a,x)=>a+x.qty,0)}
+function openCart(){$("cartOverlay").classList.add("open");renderCart()}
+function closeCart(){$("cartOverlay").classList.remove("open")}
+function renderCart(){
+ if(!cart.length){$("cartItems").innerHTML='<div class="empty">Your cart is empty.</div>';$("cartTotal").textContent=money(0);return}
+ let total=0;
+ $("cartItems").innerHTML=cart.map(i=>{const p=products.find(x=>x.id===i.id);if(!p)return"";total+=p.price*i.qty;return `<div class="item"><div class="thumb">${p.image?`<img src="${escAttr(p.image)}" style="width:100%;height:100%;object-fit:cover;border-radius:10px">`:""}</div><div><b>${esc(p.name)}</b><div>${money(p.price)}</div><div class="qty"><button onclick="changeQty('${p.id}',-1)">−</button><span>${i.qty}</span><button onclick="changeQty('${p.id}',1)">+</button></div></div><button class="btn secondary small" onclick="removeCart('${p.id}')">Remove</button></div>`}).join("");
+ $("cartTotal").textContent=money(total)
+}
+function changeQty(id,d){const i=cart.find(x=>x.id===id),p=products.find(x=>x.id===id);if(!i||!p)return;i.qty+=d;if(i.qty<=0)cart=cart.filter(x=>x.id!==id);else i.qty=Math.min(i.qty,p.stock);save();updateCartCount();renderCart()}
+function removeCart(id){cart=cart.filter(x=>x.id!==id);save();updateCartCount();renderCart()}
+function checkout(){
+ if(!cart.length)return alert("Your cart is empty.");
+ const lines=cart.map(i=>{const p=products.find(x=>x.id===i.id);return `${p.name} x${i.qty} — ${money(p.price*i.qty)}`}).join("\\n");
+ const total=cart.reduce((s,i)=>s+(products.find(p=>p.id===i.id)?.price||0)*i.qty,0);
+ alert(`ORDER SUMMARY\\n\\n${lines}\\n\\nTotal: ${money(total)}\\n\\nTo accept real online payments, connect Stripe, PayPal, or another payment provider to this checkout.`);
+}
+function openAdmin(){ $("adminOverlay").classList.add("open"); $("storeName").value=store; renderAdmin()}
+function closeAdmin(){ $("adminOverlay").classList.remove("open")}
+function saveStoreName(){store=$("storeName").value.trim()||"YOUR STORE";localStorage.setItem("resale_store",store);renderProducts();alert("Store name saved.")}
+function addProduct(){
+ const name=$("pName").value.trim(),price=Number($("pPrice").value),stock=Math.max(0,Number($("pStock").value||0));
+ if(!name||!Number.isFinite(price))return alert("Enter a product name and price.");
+ products.unshift({id:crypto.randomUUID(),name,price,stock,category:$("pCat").value.trim()||"Product",image:$("pImg").value.trim(),desc:$("pDesc").value.trim()});
+ ["pName","pPrice","pStock","pCat","pImg","pDesc"].forEach(x=>$(x).value="");save();renderProducts();renderAdmin()
+}
+function renderAdmin(){$("adminProducts").innerHTML=products.map(p=>`<div class="admin-product"><div><b>${esc(p.name)}</b><div style="font-size:12px;color:#777">${money(p.price)} · ${p.stock} in stock</div></div><button class="btn secondary small" onclick="deleteProduct('${p.id}')">Delete</button></div>`).join("")}
+function deleteProduct(id){products=products.filter(p=>p.id!==id);cart=cart.filter(i=>i.id!==id);save();renderProducts();renderAdmin();updateCartCount()}
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+function escAttr(s){return esc(s)}
+$("year").textContent=new Date().getFullYear();renderProducts();updateCartCount();
+</script>
+</body>
+</html>
